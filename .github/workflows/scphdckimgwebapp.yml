@@ -44,13 +44,13 @@ jobs:
 
       - name: Build Docker image
 
-        run: docker build -t crscphdev001.azurecr.io/scphdockerimage:latest .
+        run: docker build -t scphctrreg.azurecr.io/scphdockerimage:latest .
  
-      # Push Docker image to Azure Container Registry crscphdev001
+      # Push Docker image to Azure Container Registry scphctrreg
 
       - name: Push Docker image to Azure Container Registry
 
-        run: docker push crscphdev001.azurecr.io/scphdockerimage:latest
+        run: docker push scphctrreg.azurecr.io/scphdockerimage:latest
  
       # Deploy Docker image to Azure Web App
 
@@ -58,7 +58,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: wappscphmw-web-dev-001
-          images: crscphdev001.azurecr.io/scphdckr:latest
-          resource-group-name: AZ-RG-SupplyChainParametersHub-Dev-01
+          images: scphctrreg.azurecr.io/scphdckr:latest
+          resource-group-name: AZ-WebApp-Dev
           # startup-command: ["uvicorn", "app.main:app", "--workers","2","--worker-class", "uvicorn.workers.UvicornWorker" ,"-b", "127.0.0.1:8080"]
           enable-cd: true

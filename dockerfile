@@ -1,9 +1,9 @@
 FROM python:3.9
-WORKDIR /app 
+WORKDIR /code 
 
  
-COPY ./app /app
-COPY ./requirements.txt  /app 
+COPY ./app /code
+COPY ./requirements.txt  /code 
 # here Set the working directory inside the container
  
 
