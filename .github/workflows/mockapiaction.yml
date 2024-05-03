@@ -1,0 +1,64 @@
+name: Build azure container registry and Deploy on webapp
+ 
+on:
+
+  push:
+
+    branches:
+
+      - feature/mockapidemo
+ 
+jobs:
+
+  build-and-deploy:
+
+    runs-on: ubuntu-latest
+ 
+    steps:
+
+      - name: Checkout code
+
+        uses: actions/checkout@v2
+ 
+      - name: Setup Node.js
+
+        uses: actions/setup-node@v2
+
+        with:
+
+          node-version: '20.0.0' # Adjust the Node.js version to what you need
+ 
+      - name: Login to DockerHub
+
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+ 
+      - name: Login to Azure
+
+        run: az login --service-principal -u ${{ secrets.SERVICE_PRINCIPAL_CLIENT_ID }} -p ${{ secrets.SERVICE_PRINCIPAL_CLIENT_SECRET }} --tenant ${{ secrets.SERVICE_PRINCIPAL_TENANT_ID }}
+ 
+      - name: Login to Azure Container Registry
+
+        run: az acr login --name ${{ secrets.ACR_USERNAME }}
+ 
+      # Build Docker image scphdockerimage
+
+      - name: Build Docker image
+
+        run: docker build -t scphctrreg.azurecr.io/scphdockerimage:latest .
+ 
+      # Push Docker image to Azure Container Registry scphctrreg
+
+      - name: Push Docker image to Azure Container Registry
+
+        run: docker push scphctrreg.azurecr.io/scphdockerimage:latest
+ 
+      # Deploy Docker image to Azure Web App
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: wappscphmw-web-dev-001
+          images: scphctrreg.azurecr.io/scphdckr:latest
+          resource-group-name: AZ-WebApp-Dev
+          # startup-command: ["uvicorn", "app.main:app", "--workers","2","--worker-class", "uvicorn.workers.UvicornWorker" ,"-b", "127.0.0.1:8080"]
+          enable-cd: true
