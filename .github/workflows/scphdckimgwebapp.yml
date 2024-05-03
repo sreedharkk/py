@@ -40,7 +40,7 @@ jobs:
 
         run: az acr login --name ${{ secrets.ACR_USERNAME }}
  
-      # Build Docker image
+      # Build Docker image scphdockerimage
 
       - name: Build Docker image
 
