@@ -8,7 +8,7 @@ from databases import Database
 # Database url if none is passed the default one is used
 #DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:12345678@localhost/fastapi")
 #DATABASE_URL = "postgresql://postgres:admin1234@localhost/users"
-DATABASE_URL = "postgresql://pgadmin@psqlscphdev002:scph$2024@psqlscphdev002.postgres.database.azure.com/scph"
+DATABASE_URL = "postgresql://pgadmin:Admin$1234@mockapipgserver.postgres.database.azure.com/postgres"
 # SQLAlchemy
 engine = create_engine(DATABASE_URL)
 Base = declarative_base()
